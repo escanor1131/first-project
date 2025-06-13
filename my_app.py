@@ -1,40 +1,43 @@
 # my_app.py
 
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QPushButton, QVBoxLayout
-from instr import *
+from instr import txt_title, txt_hello, txt_instruction, txt_next, win_width, win_height, win_x, win_y
 from second_win import TestWin
 
-class MainWin(QWidget):
+class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
-        self.set_appear()
-        self.initUI()
-        self.connects()
+        self.setup_window()
+        self.create_widgets()
+        self.setup_layout()
+        self.setup_connections()
         self.show()
 
-    def set_appear(self):
+    def setup_window(self):
         self.setWindowTitle(txt_title)
         self.resize(win_width, win_height)
         self.move(win_x, win_y)
 
-    def initUI(self):
-        self.hello_text = QLabel(txt_hello)
-        self.instruction = QLabel(txt_instruction)
-        self.button = QPushButton(txt_next)
-        self.layout = QVBoxLayout()
-        self.layout.addWidget(self.hello_text)
-        self.layout.addWidget(self.instruction)
-        self.layout.addWidget(self.button)
-        self.setLayout(self.layout)
+    def create_widgets(self):
+        self.label_hello = QLabel(txt_hello)
+        self.label_instruction = QLabel(txt_instruction)
+        self.button_start = QPushButton(txt_next)
 
-    def connects(self):
-        self.button.clicked.connect(self.next_click)
+    def setup_layout(self):
+        layout = QVBoxLayout()
+        layout.addWidget(self.label_hello)
+        layout.addWidget(self.label_instruction)
+        layout.addWidget(self.button_start)
+        self.setLayout(layout)
 
-    def next_click(self):
+    def setup_connections(self):
+        self.button_start.clicked.connect(self.open_test_window)
+
+    def open_test_window(self):
         self.hide()
-        self.tw = TestWin()
+        self.test_window = TestWin()
 
 if __name__ == '__main__':
     app = QApplication([])
-    mw = MainWin()
+    main_win = MainWindow()
     app.exec_()
